@@ -30,6 +30,41 @@ app.get('/hello', (req, res) => {
     res.json({ message: 'Hello World' });
 });
 
+app.post('/users', (req, res) => {
+    try {
+        const { name, age, email } = req.body;
+
+        const newUser = {
+            id: Date.now().toString(),
+            name,
+            age,
+            email
+        }
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+})
+
+app.get('/users/:id', (req, res) => {
+    const userId = req.params.id;
+
+    const user = {
+        id: userId,
+        name: 'John Doe',
+        age: 30,
+        email: 'john.doe@example.com'
+    };
+
+    if (user) {
+        res.json(user);
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`OpenAPI documentation: http://localhost:${port}/api-docs`);
